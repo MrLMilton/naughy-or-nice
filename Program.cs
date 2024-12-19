@@ -135,28 +135,52 @@ namespace naughy_or_nice
             } while (swapped);
             return niceList;
         }
+        static (string Name, int score)[] percentListOrder((string Name, int score)[] percentList)
+        {
+            int n = percentList.Length;
+            bool swapped = false;
+            do
+            {
+                swapped = false;
+                for (int i = 1; i < n; i++)
+                {
+                    if (percentList[i - 1].score > percentList[i].score)
+                    {
+                        (string Name, int score) temp = percentList[i - 1];
+                        percentList[i - 1] = percentList[i];
+                        percentList[i] = temp;
+                        swapped = true;
+                    }
+                }
+                n--;
+            } while (swapped);
+            return percentList;
+        }
         static void Main(string[] args)
         {
             (string Name, int score)[] niceList;
             niceList = new (string Name, int score)[50];
             (string Name, int score)[] naughtyList;
             naughtyList = new (string Name, int score)[50];
-            //bool again = true;
+            (string Name, int score)[] percentList;
+            percentList = new (string Name, int score)[50];
             Console.WriteLine("Santas list");
 
-            //do
             int numOfNice = 0;
             int numOfNaughty = 0;
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Console.WriteLine("Enter the name");
                 string name = Console.ReadLine();
                 string firstname = name.Split(" ")[0];
                 string surname = name.Split(" ")[1];
+                //Console.WriteLine(firstname.Length);
+                //Console.WriteLine(surname.Length);
                 int niceScore = (santa(name) + surname.Length + vowels(name) + evenNum(surname, firstname));
                 Console.WriteLine("Nice score " + niceScore);
                 int naughtyScore = (grinch(name) + firstname.Length + afterM(name) + oddNum(surname, firstname));
                 Console.WriteLine("Naughty score " + naughtyScore);
+                Console.WriteLine("persentage score "+ Convert.ToInt32(Convert.ToDouble(niceScore)/(Convert.ToDouble(niceScore + naughtyScore)) * 100)+ " %");
                 if (niceScore > naughtyScore)
                 {
                     niceList[numOfNice] = (name, niceScore);
@@ -167,21 +191,11 @@ namespace naughy_or_nice
                     naughtyList[numOfNaughty] = (name, niceScore);
                     numOfNaughty++;
                 }
+                //niceList[i] = (name, niceScore);
+                //naughtyList[i] = (name, niceScore);
+                percentList[i] = (name,Convert.ToInt32(Convert.ToDouble(niceScore) / (Convert.ToDouble(niceScore + naughtyScore)) * 100));
                 
-                //Console.WriteLine("do you want to put in another name\nY/N");
-                //string againInput= Console.ReadLine();
-                //if (againInput == "N"|| againInput == "n")
-                //{
-                //    again = false;
-                //}
-            }//while (again);
-            //for (int i = 0; i < niceList.Length; i++)
-            //{
-            //    if (niceList[i].Name != null)
-            //    {
-            //        Console.WriteLine(niceList[i].Name);
-            //    }
-            //}
+            }
             Console.WriteLine("the naughty list in order from least to most is as follows");
             naughtyList = naughtyListOrder(naughtyList);
             for (int i = 0; i < naughtyList.Length; i++)
@@ -198,6 +212,15 @@ namespace naughy_or_nice
                 if (niceList[i].Name != null)
                 {
                     Console.WriteLine(niceList[i].Name);
+                }
+            }
+            Console.WriteLine("the persentage nice list in order from least to most is as follows");
+            percentList = percentListOrder(percentList);
+            for (int i = 0; i < percentList.Length; i++)
+            {
+                if (percentList[i].Name != null)
+                {
+                    Console.WriteLine(percentList[i].Name + Convert.ToString(percentList[i].score));
                 }
             }
         }
