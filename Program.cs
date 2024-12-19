@@ -164,11 +164,13 @@ namespace naughy_or_nice
             naughtyList = new (string Name, int score)[50];
             (string Name, int score)[] percentList;
             percentList = new (string Name, int score)[50];
+            Console.WriteLine("how many names on the list?");
+            int nameNum = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Santas list");
 
             int numOfNice = 0;
             int numOfNaughty = 0;
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < nameNum; i++)
             {
                 Console.WriteLine("Enter the name");
                 string name = Console.ReadLine();
